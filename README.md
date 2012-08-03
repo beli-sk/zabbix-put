@@ -11,8 +11,9 @@ The program is licensed under the terms of the [Simplified (2-cluase) BSD Licens
 Requirements
 ------------
 
-Source host: zabbix agent installation (**zabbix_get** command), **mktemp**, **bzip2** and **base64** commands
-Destination host: running Zabbix agent, **bunzip2** and **base64** commands
+_Source host_: zabbix agent installation (**zabbix_get** command), **mktemp**, **bzip2** and **base64** commands
+
+_Destination host_: running Zabbix agent, **bunzip2** and **base64** commands
 
 Usage
 -----

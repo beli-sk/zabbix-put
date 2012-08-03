@@ -27,7 +27,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 ZABBIX_GET="zabbix_get"
-LINESIZE=256
+LINESIZE=768
 
 prog="zabbix_put"
 

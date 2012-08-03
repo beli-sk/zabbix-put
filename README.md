@@ -20,7 +20,7 @@ Usage
 
 zabbix_put.sh takes following command line arguments:
 
-    zabbix_put <source_file> <destination_host> <destination_dir>
+    zabbix_put.sh <source_file> <destination_host> <destination_dir>
 
-It first compresses _source file_ with bzip2 and encodes it in base64, splits it into 256 byte long lines and send it line by line to _destination host_ using _zabbix_get_ with _system.run[]_ key for each line.
+It first compresses _source file_ with bzip2 and encodes it in base64, splits it into 768 byte long lines and send it line by line to _destination host_ using _zabbix_get_ with _system.run[]_ key for each line.
 Then it starts bunzip2 and base64 on the remote host to decode the file and shows MD5 sum of the remote file and local file for the user to compare.

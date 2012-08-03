@@ -41,6 +41,10 @@ function usage {
     exit 0
 }
 
+function cleanup {
+	[[ -f "$tmpf" ]] && rm -f "$tmpf"
+}
+
 [[ "$1" == "-h" ]] && usage
 
 SRCFILE="$1"
@@ -57,15 +61,17 @@ fi
 fname=`basename ${SRCFILE}`
 
 tmpf=`mktemp` || exit 1
-echo "$tmpf"
+trap cleanup exit
 
 bzip2 -c9 "$SRCFILE" | base64 -w "$LINESIZE" > "$tmpf" || exit 1
 
 cat "$tmpf" | while read line ; do
-	"$ZABBIX_GET" -s "$DSTHOST" -k "system.run[echo \"$line\" >> \"${DSTDIR}/${fname}.bzip2.b64\" ; echo .]"
+	out=`"$ZABBIX_GET" -s "$DSTHOST" -k "system.run[echo \"$line\" >> \"${DSTDIR}/${fname}.bzip2.b64\" ; echo .]"` \
+		|| fail "remote command failed"
+	[[ "$out" == "." ]] || fail "remote command failed"
+	echo -n "$out"
 done
+[[ "$?" == "0" ]] || exit $?
 "$ZABBIX_GET" -s "$DSTHOST" -k \
     "system.run[base64 -id \"${DSTDIR}/${fname}.bzip2.b64\" | bunzip2 > \"${DSTDIR}/${fname}\" ; rm \"${DSTDIR}/${fname}.bzip2.b64\" ; md5sum \"${DSTDIR}/${fname}\"]"
 md5sum "$SRCFILE"
-
-rm -v "$tmpf"

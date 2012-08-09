@@ -72,6 +72,7 @@ cat "$tmpf" | while read line ; do
 	echo -n "$out"
 done
 [[ "$?" == "0" ]] || exit $?
+echo
 "$ZABBIX_GET" -s "$DSTHOST" -k \
     "system.run[base64 -id \"${DSTDIR}/${fname}.bzip2.b64\" | bunzip2 > \"${DSTDIR}/${fname}\" ; rm \"${DSTDIR}/${fname}.bzip2.b64\" ; md5sum \"${DSTDIR}/${fname}\"]"
 md5sum "$SRCFILE"
